@@ -1,0 +1,13 @@
+.DS_Store
+
+# frontend
+web/node_modules
+web/.svelte-kit
+
+# pocketbase runtime data
+pocketbase/pb_data
+pocketbase/pb_public
+
+# local env files
+.env
+*.local

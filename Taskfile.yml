@@ -1,0 +1,71 @@
+version: '3'
+
+tasks:
+  default:
+    cmds:
+      - task --list
+
+  pocketbase:
+    desc: Run PocketBase backend
+    dir: pocketbase
+    cmds:
+      - go run . serve
+
+  web:
+    desc: Run SvelteKit frontend dev server
+    dir: web
+    cmds:
+      - pnpm dev
+
+  web-install:
+    desc: Install frontend dependencies
+    dir: web
+    cmds:
+      - pnpm install
+
+  check:
+    desc: Run frontend and backend checks
+    cmds:
+      - task: web-check
+      - task: test-go
+
+  web-check:
+    desc: Run Svelte type checks
+    dir: web
+    cmds:
+      - pnpm check
+
+  test-go:
+    desc: Run Go tests
+    dir: pocketbase
+    cmds:
+      - go test ./...
+
+  _dev-parallel:
+    internal: true
+    deps:
+      - task: pocketbase
+      - task: web
+
+  dev:
+    desc: Run PocketBase + SvelteKit together
+    cmds:
+      - task: _dev-parallel
+
+  migration-create:
+    desc: "Create a new Go migration (usage: task migration-create -- migration_name)"
+    dir: pocketbase
+    cmds:
+      - go run . migrate create {{.CLI_ARGS}}
+
+  migration-up:
+    desc: Apply pending migrations
+    dir: pocketbase
+    cmds:
+      - go run . migrate up
+
+  migration-down:
+    desc: Revert last applied migration
+    dir: pocketbase
+    cmds:
+      - go run . migrate down
