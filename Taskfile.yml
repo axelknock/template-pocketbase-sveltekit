@@ -54,6 +54,12 @@ tasks:
     cmds:
       - task: _dev-parallel
 
+  snapshot:
+    desc: Generates a full snapshot of your current collections configuration without having to type it manually.
+    dir: pocketbase
+    cmds:
+      - yes | go run . migrate collections
+
   migration-create:
     desc: "Create a new Go migration (usage: task migration-create -- migration_name)"
     dir: pocketbase
